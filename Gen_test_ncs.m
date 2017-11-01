@@ -83,5 +83,3 @@ Mat2NlxCSC('test.ncs', 0, 1, 1, [1 1 1 1 1 1], ChannelNumbers_out,SampleFrequenc
 
 
 
-
-
