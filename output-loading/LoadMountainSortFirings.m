@@ -1,11 +1,25 @@
 function S = LoadMountainSortFirings(cfg_in)
 % function S = LoadMountainSortFirings(cfg_in)
 %
-% Load MountainSort output (firings.mda) into ts
+% Load MountainSort output (firings.mda) into ts object
+%
+% CONFIG FIELDS:
+%
+%   cfg_def.fd is REQUIRED, specifies MountainSort output path
+%   cfg_def.fn = 'firings.mda'; % filename to load
+%
+% OUTPUTS:
+%
+%   S: ts object containing {nCells x 1} spike times in .t
+%
+% EXAMPLE USAGE:
+%
+%   please = []; please.fd = '/home/mvdm/projects/sorting/R050-test2/output/ms3--R050-ds1';
+%   S = LoadMountainSortFirings(please);
 %
 % MvdM 2017-11-01 initial version
 
-cfg_def.fn = 'firings.mda';
+cfg_def.fn = 'firings.mda'; % filename to load
 
 cfg = ProcessConfig(cfg_def,cfg_in);
 
