@@ -66,17 +66,14 @@ plot(test.tvec, test.data)
 
 nel = numel(Samples);
 smpls = nel/512;
-check = length(Timestamps);
-smpls == check
+check = length(Timestamps)
+smpls
 
 %% put into .ncs
-Timestamps_out = (test.tvec .*512)./10^-6; 
-Samples_out = 
-nSample = ceil(length(test.tvec)/512);
-NumberOfValidSamples_out = repmat(512, nSample,1);
-SampleFrequencies_out = repmat(Fs,nSample,1);
-ChannelNumbers_out = zeros(1,nSample); 
-Mat2NlxCSC('test.ncs', 0, 1, 1, [1 1 1 1 1 1], ChannelNumbers_out,SampleFrequencies_out , NumberOfValidSamples_out,Samples_out, Header);    
+nSample = 
+NumberOfValidSamples = 
+
+Mat2NlxCSC('test.ncs', 0, 1, 1, [1 1 1 1 1 1], test.tvec,[1:4], Fs, NumberOfValidSamples,Samples, Header);    
 
 
 
