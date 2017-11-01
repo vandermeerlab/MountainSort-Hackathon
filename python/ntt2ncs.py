@@ -88,7 +88,7 @@ def write_ncs(stitched,ttname,dirname):
         #for each chunk of 512 samples...
         for j in range(len(stitched[i])/512):
             #grab appropriate data
-            timestamp = j*512*32000
+            timestamp = j*1000000*512/32000
             chan_number = i
             sample_freq = 32000
             num_valid = 512
