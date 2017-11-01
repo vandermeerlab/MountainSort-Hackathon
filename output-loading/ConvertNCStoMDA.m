@@ -20,6 +20,12 @@ cfg_def.fout = 'out.mda'; % output filename
 cfg = ProcessConfig(cfg_def,cfg_in);
 
 temp_out = [];
+
+%% check inputs
+
+
+
+%%
 for iCSC = length(cfg.fin):-1:1
 
     this_csc = cfg.fin{iCSC};
@@ -32,4 +38,4 @@ for iCSC = length(cfg.fin):-1:1
     
 end
 
-writemda(temp_out,cfg.fout);
+writemda(temp_out,cfg.fout,'int16');
