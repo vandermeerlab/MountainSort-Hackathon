@@ -1,6 +1,7 @@
 %% initalize
     PARAMS.code_base_dir = '/Users/jericcarmichael/Documents/GitHub/vandermeerlab/code-matlab/shared'; % where the codebase repo can be found
     addpath(genpath(PARAMS.code_base_dir));
+    addpath(genpath('/Users/jericcarmichael/Documents/GitHub/MountainSort-Hackathon-Matlab'))
 % move to the data
 cd('/Users/jericcarmichael/Documents/R050-2014-03-28_32ktest')
 %% load a sample of spikes
@@ -63,6 +64,8 @@ plot(test.tvec, test.data)
 
 %% try to get N valid samples
 [Timestamps, ChannelNumbers, SampleFrequencies, NumberOfValidSamples, Samples, Header] = Nlx2MatCSC('CSC1.ncs', [1 1 1 1 1], 1, 1, [] );
+Mat2NlxCSC('test.ncs', 0, 1, [], [1 1 1 1 1 1], Timestamps, ChannelNumbers, SampleFrequencies, NumberOfValidSamples,Samples, Header);
+% Mat2NlxCSC('test.ncs', 0, 1, [], [1 0 0 0 1 0], Timestamps, [],[],[],Samples, []);
 
 nel = numel(Samples);
 smpls = nel/512;
@@ -71,12 +74,14 @@ smpls == check
 
 %% put into .ncs
 Timestamps_out = (test.tvec .*512)./10^-6; 
-Samples_out = 
-nSample = ceil(length(test.tvec)/512);
-NumberOfValidSamples_out = repmat(512, nSample,1);
-SampleFrequencies_out = repmat(Fs,nSample,1);
+Timestamps_out= genArray(Timestamps_out);
+nSample = floor(length(test.tvec)/512);
+NumberOfValidSamples_out = repmat(512, 1,nSample);
+SampleFrequencies_out = repmat(Fs,1,nSample);
 ChannelNumbers_out = zeros(1,nSample); 
-Mat2NlxCSC('test.ncs', 0, 1, 1, [1 1 1 1 1 1], ChannelNumbers_out,SampleFrequencies_out , NumberOfValidSamples_out,Samples_out, Header);    
+Samples_out = genArray(test.data(1,:));
+Header_out = {}; 
+Mat2NlxCSC('test.ncs', 0, 1, 1, [1 1 1 1 1 1], Timestamps_out, ChannelNumbers_out,SampleFrequencies_out , NumberOfValidSamples_out,Samples_out, Header_out);    
 
 
 
