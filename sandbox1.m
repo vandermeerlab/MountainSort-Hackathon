@@ -34,9 +34,5 @@ regexp([Header{:}],'(?<=SamplingFrequency[^0-9]*)[0-9]*','match')
 
 %%
 cd('/Users/youkitanaka/Desktop/R050-2014-03-28_32ktest')
-fname= 'CSC1.ncs';
-
-[Timestamps, ~, SampleFrequencies, NumberOfValidSamples, Samples, Header] = Nlx2MatCSC(fname, [1 1 1 1 1], 1, 1, []);
-
-                                                       
+                                 
                                
