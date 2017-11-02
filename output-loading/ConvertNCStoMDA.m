@@ -7,7 +7,7 @@ function ConvertNCStoMDA(cfg_in)
 %
 % cfg_def.fin = {}; % cell array of ncs files
 % cfg_def.fout = 'out.mda'; % output filename
-%
+%   
 % EXAMPLE UASGE:
 %
 % cfg = []; cfg.fin = {'CSC1.ncs','CSC2.ncs','CSC3.ncs','CSC4.ncs'}; cfg.fout = 'TT1.mda';
@@ -22,8 +22,9 @@ cfg = ProcessConfig(cfg_def,cfg_in);
 temp_out = [];
 
 %% check inputs
-
-
+if ~iscell(cfg.fin)
+    error('Input must be cell array of strings for ncs filenames')
+end
 
 %%
 for iCSC = length(cfg.fin):-1:1
