@@ -1,1 +1,4 @@
-MountainSort-Hackathon-Matlab
+# Goals:
+
+  * Compare MountainSort output to manual sort. This needs (1) conversion from .ntt to four CSC files ([#4](https://github.com/vandermeerlab/MountainSort-Hackathon-Matlab/issues/4)) and (2) conversion from CSC files to .mda in order to run MountainSort on previously recorded .ntt data (done, [#2](https://github.com/vandermeerlab/MountainSort-Hackathon-Matlab/issues/2)). Then, (3) .t files need to be converted into a manualfirings.mda file for comparison ([#3](https://github.com/vandermeerlab/MountainSort-Hackathon-Matlab/issues/3))
+  * Compare decoding accuracy for MountainSort vs. manual. This needs (1) loading of MountainSort output into a ts (done, [#1](https://github.com/vandermeerlab/MountainSort-Hackathon-Matlab/issues/1)), (2) integration into data analysis pipeline, and (3) code for comparing output.
