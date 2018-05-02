@@ -1,7 +1,9 @@
 %% initalize
-    PARAMS.code_base_dir = '/Users/jericcarmichael/Documents/GitHub/vandermeerlab/code-matlab/shared'; % where the codebase repo can be found
-    addpath(genpath(PARAMS.code_base_dir));
-    addpath(genpath('/Users/jericcarmichael/Documents/GitHub/MountainSort-Hackathon-Matlab'))
+PARAMS.code_base_dir = '/Users/jericcarmichael/Documents/GitHub/vandermeerlab/code-matlab/shared'; % where the codebase repo can be found
+addpath(genpath(PARAMS.code_base_dir));
+addpath(genpath('/Users/jericcarmichael/Documents/GitHub/MountainSort-Hackathon-Matlab'))
+addpath(genpath('/Users/jericcarmichael/Downloads/releaseDec2015/binaries'))
+
 % move to the data
 cd('/Users/jericcarmichael/Documents/R050-2014-03-28_32ktest')
 %% load a sample of spikes
@@ -14,14 +16,13 @@ cd('/Users/jericcarmichael/Documents/R050-2014-03-28_32ktest')
 %                             FieldSelectionFlags(3): Cell Numbers
 %                             FieldSelectionFlags(4): Spike Features
 %                             FieldSelectionFlags(5): Samples
-    fname= 'TT1.ntt';
+fname= 'TT1.ntt';
 [Timestamps, ScNumbers, CellNumbers, Features, Samples, Header] =  Nlx2MatSpike(fname, [1 1 1 1 1], 1, 1, [] );
-
 %% check a spike
 
 for ii = 1:4
-%     subplot(2,2,ii)
-hold on
+    %     subplot(2,2,ii)
+    hold on
     plot(Samples(:,ii,3))
 end
 
@@ -34,12 +35,12 @@ test.data = zeros(4,length(test.tvec));
 
 % put spikes into ncell X tvec array at fixed number and freq
 rng(0,'twister');
-n=500; 
+n=500;
 xend = length(test.tvec);
-S_ts=1+rand(1,n)*(xend-1); 
+S_ts=1+rand(1,n)*(xend-1);
 S_ts = sort(round(S_ts));
 % check for overlaps within a fixed time window (in this case the number of
-% samples in a spike sample (32)).  
+% samples in a spike sample (32)).
 for ii = 1:n-1
     if S_ts(ii+1) - S_ts(ii) < 32;
         flags(ii) = 1;
@@ -52,20 +53,20 @@ if sum(flags) <0
 end
 
 for ii = 1:length(S_ts)
-    test.data(1,S_ts(ii):S_ts(ii)+31) = Samples(:,1,3)'; 
-    test.data(2,S_ts(ii):S_ts(ii)+31) = Samples(:,2,3)'; 
-    test.data(3,S_ts(ii):S_ts(ii)+31) = Samples(:,3,3)'; 
-    test.data(4,S_ts(ii):S_ts(ii)+31) = Samples(:,4,3)'; 
+    test.data(1,S_ts(ii):S_ts(ii)+31) = Samples(:,1,3)';
+    test.data(2,S_ts(ii):S_ts(ii)+31) = Samples(:,2,3)';
+    test.data(3,S_ts(ii):S_ts(ii)+31) = Samples(:,3,3)';
+    test.data(4,S_ts(ii):S_ts(ii)+31) = Samples(:,4,3)';
 end
 %% plot the test data
 figure(100)
+subplot(1,4,1:3)
 hold on
 plot(test.tvec, test.data)
 
 %% try to get N valid samples
 [Timestamps, ChannelNumbers, SampleFrequencies, NumberOfValidSamples, Samples, Header] = Nlx2MatCSC('CSC1.ncs', [1 1 1 1 1], 1, 1, [] );
-Mat2NlxCSC('test.ncs', 0, 1, [], [1 1 1 1 1 1], Timestamps, ChannelNumbers, SampleFrequencies, NumberOfValidSamples,Samples, Header);
-% Mat2NlxCSC('test.ncs', 0, 1, [], [1 0 0 0 1 0], Timestamps, [],[],[],Samples, []);
+Mat2NlxCSC('test.ncs', 0, 1, 1, [1 1 1 1 1 1], Timestamps, ChannelNumbers, SampleFrequencies, NumberOfValidSamples,Samples, Header);
 
 nel = numel(Samples);
 smpls = nel/512;
@@ -73,16 +74,17 @@ check = length(Timestamps);
 smpls == check
 
 %% put into .ncs
-Timestamps_out = (test.tvec .*512)./10^-6; 
+Timestamps_out = (test.tvec .*512)./10^-6;
 Timestamps_out= genArray(Timestamps_out);
 nSample = floor(length(test.tvec)/512);
 NumberOfValidSamples_out = repmat(512, 1,nSample);
 SampleFrequencies_out = repmat(Fs,1,nSample);
-ChannelNumbers_out = zeros(1,nSample); 
-Samples_out = genArray(test.data(1,:));
-Header_out = {}; 
-Mat2NlxCSC('test.ncs', 0, 1, 1, [1 1 1 1 1 1], Timestamps_out, ChannelNumbers_out,SampleFrequencies_out , NumberOfValidSamples_out,Samples_out, Header_out);    
-
+ChannelNumbers_out = zeros(1,nSample);
+for iCh = 1:size(test.data,1)
+    Samples_out = genArray(test.data(iCh,:));
+    Header_out = {};
+    Mat2NlxCSC(['test' num2str(iCh) '.ncs'], 0, 1, 1, [1 1 1 1 1 1], Timestamps_out, ChannelNumbers_out,SampleFrequencies_out , NumberOfValidSamples_out,Samples_out, Header_out);
+end
 
 
 
