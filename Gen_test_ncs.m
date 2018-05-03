@@ -1,11 +1,12 @@
 %% initalize
-PARAMS.code_base_dir = '/Users/jericcarmichael/Documents/GitHub/vandermeerlab/code-matlab/shared'; % where the codebase repo can be found
-addpath(genpath(PARAMS.code_base_dir));
-addpath(genpath('/Users/jericcarmichael/Documents/GitHub/MountainSort-Hackathon-Matlab'))
-addpath(genpath('/Users/jericcarmichael/Downloads/releaseDec2015/binaries'))
-
+%     PARAMS.code_base_dir = '/Users/jericcarmichael/Documents/GitHub/vandermeerlab/code-matlab/shared'; % where the codebase repo can be found
+    PARAMS.code_base_dir = 'D:\Users\mvdmlab\My_Documents\GitHub\vandermeerlab\code-matlab\shared';
+    addpath(genpath(PARAMS.code_base_dir));
+%     addpath(genpath('/Users/jericcarmichael/Documents/GitHub/MountainSort-Hackathon-Matlab'))
+    addpath(genpath('D:\Users\mvdmlab\My_Documents\GitHub\MountainSort-Hackathon-Matlab'))
 % move to the data
-cd('/Users/jericcarmichael/Documents/R050-2014-03-28_32ktest')
+% cd('/Users/jericcarmichael/Documents/R050-2014-03-28_32ktest')
+cd('D:\DATA\R050-2014-03-28_32ktest')
 %% load a sample of spikes
 % FieldSelectionFlags: Vector with each item being either a zero (excludes
 %                          data) or a one (includes data) that determines which
@@ -18,6 +19,8 @@ cd('/Users/jericcarmichael/Documents/R050-2014-03-28_32ktest')
 %                             FieldSelectionFlags(5): Samples
 fname= 'TT1.ntt';
 [Timestamps, ScNumbers, CellNumbers, Features, Samples, Header] =  Nlx2MatSpike(fname, [1 1 1 1 1], 1, 1, [] );
+[~, ~, ~, ~, ~, Header_temp] = Nlx2MatCSC('CSC1.ncs', [1 1 1 1 1], 1, 1, [] ); % use this to get a header template
+
 %% check a spike
 
 for ii = 1:4
@@ -65,7 +68,7 @@ hold on
 plot(test.tvec, test.data)
 
 %% try to get N valid samples
-[Timestamps, ChannelNumbers, SampleFrequencies, NumberOfValidSamples, Samples, Header] = Nlx2MatCSC('CSC1.ncs', [1 1 1 1 1], 1, 1, [] );
+[Timestamps, ChannelNumbers, SampleFrequencies, NumberOfValidSamples, Samples, Header_out] = Nlx2MatCSC('CSC1.ncs', [1 1 1 1 1], 1, 1, [] );
 Mat2NlxCSC('test.ncs', 0, 1, 1, [1 1 1 1 1 1], Timestamps, ChannelNumbers, SampleFrequencies, NumberOfValidSamples,Samples, Header);
 
 nel = numel(Samples);
@@ -75,14 +78,15 @@ smpls == check
 
 %% put into .ncs
 Timestamps_out = (test.tvec .*512)./10^-6;
-Timestamps_out= genArray(Timestamps_out);
 nSample = floor(length(test.tvec)/512);
 NumberOfValidSamples_out = repmat(512, 1,nSample);
 SampleFrequencies_out = repmat(Fs,1,nSample);
 ChannelNumbers_out = zeros(1,nSample);
+Header_out = Header_temp;
 for iCh = 1:size(test.data,1)
     Samples_out = genArray(test.data(iCh,:));
-    Header_out = {};
+    s_idx = strfind(Header_temp{18},'CSC');
+    Header_out{18} =[Header_temp{18}(1:s_idx-1) 'test' num2str(iCh)]; 
     Mat2NlxCSC(['test' num2str(iCh) '.ncs'], 0, 1, 1, [1 1 1 1 1 1], Timestamps_out, ChannelNumbers_out,SampleFrequencies_out , NumberOfValidSamples_out,Samples_out, Header_out);
 end
 
