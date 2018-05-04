@@ -12,7 +12,8 @@ run mlsetup.m
 cd('/Users/jericcarmichael/Documents/R050-2014-03-28_32ktest')
 
 %% get the ncs files
-cfg.fc={'test1.ncs', 'test2.ncs', 'test3.ncs', 'test4.ncs'};
+close all
+cfg.fc={'tst1.ncs', 'tst2.ncs', 'tst3.ncs', 'tst4.ncs'};
 test = LoadCSC(cfg);
 
 data_out = test.data*1000000;
@@ -21,11 +22,11 @@ subplot(2,1,1)
 plot(data_out(1,:)')
 
 % prepare your MxN array called X %
-
-writemda16i(data_out,'raw.mda');
+id = 'raw32_long.mda';
+writemda32(data_out,id);
 
 %%
-clear all
-X=readmda('raw1.mda');
+clear data_out
+X=readmda(id);
 subplot(2,1,2)
 plot(X(1,:))
