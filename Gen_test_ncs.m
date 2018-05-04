@@ -1,12 +1,12 @@
 %% initalize
-%     PARAMS.code_base_dir = '/Users/jericcarmichael/Documents/GitHub/vandermeerlab/code-matlab/shared'; % where the codebase repo can be found
-    PARAMS.code_base_dir = 'D:\Users\mvdmlab\My_Documents\GitHub\vandermeerlab\code-matlab\shared';
+    PARAMS.code_base_dir = '/Users/jericcarmichael/Documents/GitHub/vandermeerlab/code-matlab/shared'; % where the codebase repo can be found
+%     PARAMS.code_base_dir = 'D:\Users\mvdmlab\My_Documents\GitHub\vandermeerlab\code-matlab\shared';
     addpath(genpath(PARAMS.code_base_dir));
-%     addpath(genpath('/Users/jericcarmichael/Documents/GitHub/MountainSort-Hackathon-Matlab'))
-    addpath(genpath('D:\Users\mvdmlab\My_Documents\GitHub\MountainSort-Hackathon-Matlab'))
+    addpath(genpath('/Users/jericcarmichael/Documents/GitHub/MountainSort-Hackathon-Matlab'))
+%     addpath(genpath('D:\Users\mvdmlab\My_Documents\GitHub\MountainSort-Hackathon-Matlab'))
 % move to the data
-% cd('/Users/jericcarmichael/Documents/R050-2014-03-28_32ktest')
-cd('D:\DATA\R050-2014-03-28_32ktest')
+cd('/Users/jericcarmichael/Documents/R050-2014-03-28_32ktest')
+% cd('D:\DATA\R050-2014-03-28_32ktest')
 %% load a sample of spikes
 % FieldSelectionFlags: Vector with each item being either a zero (excludes
 %                          data) or a one (includes data) that determines which
@@ -31,7 +31,7 @@ end
 
 %% create a test set based on our favourite spike sample
 Fs = 320000;   %Header   % YOUKI make this into a regexp kinda search thing or something
-t_len = 12;   % time in sec
+t_len = 120;   % time in sec
 
 test.tvec = 0:1/Fs:t_len;
 test.data = zeros(4,length(test.tvec));
@@ -87,7 +87,7 @@ for iCh = 1:size(test.data,1)
     Samples_out = genArray(test.data(iCh,:));
     s_idx = strfind(Header_temp{18},'CSC');
     Header_out{18} =[Header_temp{18}(1:s_idx-1) 'test' num2str(iCh)]; 
-    Mat2NlxCSC(['test' num2str(iCh) '.ncs'], 0, 1, 1, [1 1 1 1 1 1], Timestamps_out, ChannelNumbers_out,SampleFrequencies_out , NumberOfValidSamples_out,Samples_out, Header_out);
+    Mat2NlxCSC(['tst' num2str(iCh) '.ncs'], 0, 1, 1, [1 1 1 1 1 1], Timestamps_out, ChannelNumbers_out,SampleFrequencies_out , NumberOfValidSamples_out,Samples_out, Header_out);
 end
 
 
