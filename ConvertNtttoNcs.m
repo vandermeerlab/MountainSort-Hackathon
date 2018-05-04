@@ -1,11 +1,12 @@
-function [csc] =ConvertNtttoNcs(cfg_in)
+function [raw,wave] =ConvertNtttoNcs(cfg_in)
 %% ConvertNtttoNcs: convert a .ntt discontinuous file into multiple .ncs continously sampled files 
 
 
 
 %% default parameters
-cfg_def.fin = {};
-cfg_def.fout = 'out.ncs';
+cfg_def.ntt_in = {};
+cfg_def.ncs_in = {}; 
+cfg_def.ncs_out = 'out.ncs';
 
 cfg = ProcessConfig(cfg_def,cfg_in);
 
@@ -13,8 +14,7 @@ data_out = [];
 %% identify channel numbers from ntt
 
 %% extract elements from Ntt file
-% for iF = 1:length(cfg.fin)
-[Timestamps, ScNumbers, CellNumbers, Features, Samples, Header] =  Nlx2MatSpike(cfg.fin{iF}, [1 1 1 1 1], 1, 1, [] );
+[Timestamps, ScNumbers, CellNumbers, Features, Samples, Header] =  Nlx2MatSpike(cfg.ntt_in, [1 1 1 1 1], 1, 1, [] );
 Fs = regexp([Header{:}],'(?<=SamplingFrequency[^0-9]*)[0-9]*','match'); 
 Fs  =str2num(Fs{1})
 AdChan = regexp([Header{20}],'(?<=ADChannel[^0-7]*)[0-7]*','match');
@@ -45,7 +45,6 @@ tvec = nan(numel(Samples),1);
         idx = idx + nvs;
         
     end % of block loop
-
 %% convert vales into nChanx(2xnsamples_per_spikexnEvents
 % Concatenate with zeros(size(snippet,2)) between snippets such that you end up with a 2D matrix of 4x(2x40xN)
 % The rows must be the channels of the ntrode

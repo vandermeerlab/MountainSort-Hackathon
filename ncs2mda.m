@@ -7,9 +7,18 @@
 % move to the data
 
 %% add mountainlab
-cd('/Users/jericcarmichael/Documents/GitHub/mountainsort/matlab')
+% cd('/Users/jericcarmichael/Documents/GitHub/MountainSort-Hackathon-Matlab/matlab')
 run mlsetup.m
 cd('/Users/jericcarmichael/Documents/R050-2014-03-28_32ktest')
+
+%%
+cfg.ntt_in = 'TT1.ntt';
+cfg.ncs_in = 'CSC1.ncs'
+[raw, wave]= ConvertNtttoNcs(cfg)
+
+
+
+
 
 %% get the ncs files
 close all
